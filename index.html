@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Game Development Status</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #000000;
+      color: #ffffff;
+      font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 720px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .label {
+      font-size: 1.15rem;
+      font-weight: 600;
+      white-space: nowrap;
+      min-width: 220px;
+      letter-spacing: 0.3px;
+    }
+
+    .bar {
+      display: grid;
+      grid-template-columns: repeat(10, 1fr);
+      gap: 6px;
+      flex: 1;
+      max-width: 440px;
+      height: 26px;
+      padding: 4px;
+      background-color: #0d0d0d;
+      border: 1px solid #262626;
+      border-radius: 6px;
+    }
+
+    .segment {
+      background-color: #1a1a1a;
+      border-radius: 3px;
+      transition: background-color 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .segment.filled {
+      background-color: var(--bar-color, #38bdf8);
+      box-shadow: 0 0 8px var(--bar-glow, rgba(56, 189, 248, 0.45));
+    }
+
+    @media (max-width: 600px) {
+      .row {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+      }
+
+      .bar {
+        max-width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="container" id="status-list"></main>
+
+  <script>
+    // =========================================================
+    // EDIT YOUR PROGRESS HERE (0 to 10 for each bar)
+    // =========================================================
+    const BAR_COLOR = "#38bdf8"; // Change hex color anytime (e.g. "#22c55e" for green)
+
+    const GAME_PROGRESS = [
+      { label: "🗺️Map",               filled: 5 },
+      { label: "⚙️Overall Mechanics", filled: 6 },
+      { label: "🔼Level Mechanics",   filled: 3 },
+      { label: "🔥Powers",            filled: 7 },
+      { label: "🥭Fruits",            filled: 6 },
+      { label: "⚔️Weapons And Items", filled: 2 },
+      { label: "🔘UI",                filled: 8 },
+    ];
+    // =========================================================
+
+    document.documentElement.style.setProperty("--bar-color", BAR_COLOR);
+    document.documentElement.style.setProperty("--bar-glow", BAR_COLOR + "73");
+
+    const list = document.getElementById("status-list");
+
+    GAME_PROGRESS.forEach((item) => {
+      const value = Math.max(0, Math.min(10, Math.round(item.filled)));
+
+      const row = document.createElement("div");
+      row.className = "row";
+
+      const label = document.createElement("div");
+      label.className = "label";
+      label.textContent = item.label;
+
+      const bar = document.createElement("div");
+      bar.className = "bar";
+
+      for (let i = 1; i <= 10; i++) {
+        const seg = document.createElement("div");
+        seg.className = i <= value ? "segment filled" : "segment";
+        bar.appendChild(seg);
+      }
+
+      row.appendChild(label);
+      row.appendChild(bar);
+      list.appendChild(row);
+    });
+  </script>
+</body>
+</html>
